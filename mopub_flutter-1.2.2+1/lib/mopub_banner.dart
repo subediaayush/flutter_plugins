@@ -66,6 +66,7 @@ class _MoPubBannerAdState extends State<MoPubBannerAd>
       "adUnitId": widget.adUnitId,
       "autoRefresh": false,
       "height": widget.bannerSize.height,
+      "width": widget.bannerSize.width,
     };
 
     Widget platformView;

@@ -6,7 +6,7 @@
 //
 
 import Foundation
-import MoPub
+import MoPubSDK
 
 class MoPubBannerAd : NSObject, FlutterPlatformView {
     
@@ -46,14 +46,15 @@ class MoPubBannerAd : NSObject, FlutterPlatformView {
             let adUnitId = self.args["adUnitId"] as? String ?? "ad_unit_id"
             let autoRefresh = self.args["autoRefresh"] as? Bool ?? false
             let height = self.args["height"] as? NSInteger ?? 0
-            
+            let width = self.args["width"] as? NSInteger ?? 0
+
             adView = {
                 let view: MPAdView = MPAdView(adUnitId: adUnitId)
                 view.delegate = self                
                 if autoRefresh { adView!.startAutomaticallyRefreshingContents() }
                 return view
             }()
-            adView!.loadAd(withMaxAdSize: getBannerAdSize(height: height))
+            adView!.loadAd(withMaxAdSize: CGSize(width: width, height: height)
         }
         return adView
     }
