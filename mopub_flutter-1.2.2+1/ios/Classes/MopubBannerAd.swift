@@ -54,7 +54,7 @@ class MoPubBannerAd : NSObject, FlutterPlatformView {
                 if autoRefresh { adView!.startAutomaticallyRefreshingContents() }
                 return view
             }()
-            adView!.loadAd(withMaxAdSize: CGSize(width: width, height: height)
+            adView!.loadAd(withMaxAdSize: CGSize(width: width, height: height))
         }
         return adView
     }
