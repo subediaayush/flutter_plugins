@@ -23,8 +23,8 @@ class MoPubInterstitialAd {
   //Common channel for all interstitial ads until load
   static const MethodChannel _channel = MethodChannel(INTERSTITIAL_AD_CHANNEL);
 
-  MethodChannel _adChannel;
-  final void Function(InterstitialAdResult, dynamic) listener;
+  MethodChannel? _adChannel;
+  final void Function(InterstitialAdResult, dynamic)? listener;
 
   final String adUnitId;
 
@@ -34,7 +34,7 @@ class MoPubInterstitialAd {
       {this.reloadOnClosed = false}) {
     if (listener != null) {
       _adChannel = MethodChannel('${INTERSTITIAL_AD_CHANNEL}_$adUnitId');
-      _adChannel.setMethodCallHandler(_handleEvent);
+      _adChannel?.setMethodCallHandler(_handleEvent);
     }
   }
 
@@ -76,22 +76,22 @@ class MoPubInterstitialAd {
   Future<dynamic> _handleEvent(MethodCall call) {
     switch (call.method) {
       case DISPLAYED_METHOD:
-        listener(InterstitialAdResult.DISPLAYED, call.arguments);
+        listener?.call(InterstitialAdResult.DISPLAYED, call.arguments);
         break;
       case DISMISSED_METHOD:
-        listener(InterstitialAdResult.DISMISSED, call.arguments);
+        listener?.call(InterstitialAdResult.DISMISSED, call.arguments);
         if (reloadOnClosed) {
           load();
         }
         break;
       case ERROR_METHOD:
-        listener(InterstitialAdResult.ERROR, call.arguments);        
+        listener?.call(InterstitialAdResult.ERROR, call.arguments);
         break;
       case LOADED_METHOD:
-        listener(InterstitialAdResult.LOADED, call.arguments);
+        listener?.call(InterstitialAdResult.LOADED, call.arguments);
         break;
       case CLICKED_METHOD:
-        listener(InterstitialAdResult.CLICKED, call.arguments);
+        listener?.call(InterstitialAdResult.CLICKED, call.arguments);
         break;
     }
     return Future.value(true);

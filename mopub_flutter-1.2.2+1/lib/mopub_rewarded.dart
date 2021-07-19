@@ -25,8 +25,8 @@ enum RewardedVideoAdResult {
 class MoPubRewardedVideoAd {
   static const MethodChannel _channel = MethodChannel(REWARDED_VIDEO_CHANNEL);
 
-  MethodChannel _adChannel;
-  final void Function(RewardedVideoAdResult, dynamic) listener;
+  MethodChannel? _adChannel;
+  final void Function(RewardedVideoAdResult, dynamic)? listener;
 
   final String adUnitId;
 
@@ -36,7 +36,7 @@ class MoPubRewardedVideoAd {
       {this.reloadOnClosed = false}) {
     if (listener != null) {
       _adChannel = MethodChannel('${REWARDED_VIDEO_CHANNEL}_$adUnitId');
-      _adChannel.setMethodCallHandler(_handleEvent);
+      _adChannel?.setMethodCallHandler(_handleEvent);
     }
   }
 
@@ -46,7 +46,7 @@ class MoPubRewardedVideoAd {
         'adUnitId': adUnitId,
       });
     } on PlatformException {
-      return false;
+      return;
     }
   }
 
@@ -68,7 +68,7 @@ class MoPubRewardedVideoAd {
         "adUnitId": adUnitId,
       });
     } on PlatformException {
-      return false;
+      return;
     }
   }
 
@@ -77,32 +77,32 @@ class MoPubRewardedVideoAd {
     switch (call.method) {
       case GRANT_REWARD:
         if (listener != null)
-          listener(RewardedVideoAdResult.GRANT_REWARD, call.arguments);
+          listener?.call(RewardedVideoAdResult.GRANT_REWARD, call.arguments);
         break;
       case DISPLAYED_METHOD:
         if (listener != null)
-          listener(RewardedVideoAdResult.VIDEO_DISPLAYED, call.arguments);
+          listener?.call(RewardedVideoAdResult.VIDEO_DISPLAYED, call.arguments);
         break;
       case DISMISSED_METHOD:
         if (listener != null)
-          listener(RewardedVideoAdResult.VIDEO_CLOSED, call.arguments);
+          listener?.call(RewardedVideoAdResult.VIDEO_CLOSED, call.arguments);
         if (reloadOnClosed) {
           load();
         }
         break;
       case LOADED_METHOD:
         if (listener != null)
-          listener(RewardedVideoAdResult.LOADED, call.arguments);
+          listener?.call(RewardedVideoAdResult.LOADED, call.arguments);
         break;
       case CLICKED_METHOD:
         if (listener != null)
-          listener(RewardedVideoAdResult.CLICKED, call.arguments);
+          listener?.call(RewardedVideoAdResult.CLICKED, call.arguments);
         break;
       case ERROR_METHOD:
       case REWARDED_PLAYBACK_ERROR:
       default:
         if (listener != null)
-          listener(RewardedVideoAdResult.ERROR, call.arguments);        
+          listener?.call(RewardedVideoAdResult.ERROR, call.arguments);
         break;
     }
     return Future.value(true);

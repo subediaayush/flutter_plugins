@@ -37,14 +37,14 @@ class MoPubBannerAd extends StatefulWidget {
   final BannerSize bannerSize;
 
   /// Banner Ad listener
-  final void Function(BannerAdResult, dynamic) listener;
+  final void Function(BannerAdResult, dynamic)? listener;
 
   /// This defines if the ad view to be kept alive.
   final bool keepAlive;
 
   const MoPubBannerAd({
-    Key key,
-    this.adUnitId,
+    Key? key,
+    required this.adUnitId,
     this.bannerSize = BannerSize.MATCH_VIEW,
     this.listener,
     this.keepAlive = false,
@@ -102,8 +102,7 @@ class _MoPubBannerAdState extends State<MoPubBannerAd>
     channel.setMethodCallHandler((MethodCall call) async {
       switch (call.method) {
         case ERROR_METHOD:
-          if (widget.listener != null)
-            widget.listener(BannerAdResult.ERROR, call.arguments);
+          widget.listener?.call(BannerAdResult.ERROR, call.arguments);
           break;
         case LOADED_METHOD:
           setState(() {
@@ -111,12 +110,10 @@ class _MoPubBannerAdState extends State<MoPubBannerAd>
                 ? double.infinity
                 : widget.bannerSize.height.toDouble();
           });
-          if (widget.listener != null)
-            widget.listener(BannerAdResult.LOADED, call.arguments);
+          widget.listener?.call(BannerAdResult.LOADED, call.arguments);
           break;
         case CLICKED_METHOD:
-          if (widget.listener != null)
-            widget.listener(BannerAdResult.CLICKED, call.arguments);
+          widget.listener?.call(BannerAdResult.CLICKED, call.arguments);
           break;
       }
     });

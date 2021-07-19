@@ -13,8 +13,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  MoPubInterstitialAd interstitialAd;
-  MoPubRewardedVideoAd videoAd;
+  late MoPubInterstitialAd interstitialAd;
+  late MoPubRewardedVideoAd videoAd;
 
   @override
   void initState() {
